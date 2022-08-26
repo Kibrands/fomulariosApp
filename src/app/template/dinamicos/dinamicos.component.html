@@ -1,0 +1,71 @@
+<h2>Template: <small>Din&aacute;micos</small></h2>
+<hr>
+
+<form (ngSubmit)="guardar()" autocomplete="off" #miFormulario="ngForm">
+    <!-- Nombre -->
+    <div class="mb-3 row">
+        <label class="col-sm-3 col-form-label">Nombre</label>
+        <div class="col-sm-9">
+            <input type="text"
+                class="form-control"
+                [ngModel]="persona.nombre"
+                name="nombre"
+                placeholder="Nombre de la persona"
+                required
+            >
+            <span class="from-text text-danger"
+                *ngIf="miFormulario.controls['nombre']?.errors && miFormulario.controls['nombre']?.touched"
+            >
+                Este campo es obligatorio
+            </span>
+        </div>
+    </div>
+    <!-- Agregar favorito -->
+    <div class="mb-3 row">
+        <label class="col-sm-3 col-form-label">Agregar</label>
+        <div class="col-sm-9">
+            <div class="input-group">
+                <input type="text"
+                    class="form-control"
+                    placeholder="Agregar favorito"
+                    name="nuevoJuego"
+                    [(ngModel)]="nuevoFavorito"
+                    (keyup.enter)="agregar()"
+                >
+                <button type="button"
+                    class="btn btn-outline-primary"
+                    (click)="agregar()"
+                >Agregar</button>
+            </div>
+        </div>
+    </div>
+    <!-- Lista de Juegos Favoritos -->
+    <div class="mb-3 row">
+        <label class="col-sm-3 col-form-label">Favoritos</label>
+        <div class="col-sm-9">
+            <div class="input-group mb-1" *ngFor="let juego of persona.favoritos; let i = index">
+                <input type="text"
+                    class="form-control"
+                    readonly
+                    [name]="'favorito_' + i"
+                    [(ngModel)]="juego.nombre"
+                >
+                <button type="button"
+                    class="btn btn-outline-danger"
+                    (click)="eliminar(juego.id)"
+                >Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <button type="button"
+                (click)="guardar()"
+                [disabled]="miFormulario.invalid"
+                class="btn btn-primary float-end"
+            >Guardar</button>
+        </div>
+    </div>
+    
+</form>
