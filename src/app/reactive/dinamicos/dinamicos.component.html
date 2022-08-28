@@ -1,7 +1,7 @@
 <h2>Reactivos: <small>Din&aacute;micos</small></h2>
 <hr>
 
-<form autocomplete="off">
+<form autocomplete="off" [formGroup]="miFormulario" (ngSubmit)="guardar()">
     <!-- Nombre -->
     <div class="mb-3 row">
         <label class="col-sm-3 col-form-label">Nombre</label>
@@ -9,8 +9,10 @@
             <input type="text"
                 class="form-control"
                 placeholder="Nombre de la persona"
+                formControlName="nombre"
             >
             <span class="from-text text-danger"
+                *ngIf="campoEsValido('nombre')"
             >Este campo es obligatorio</span>
         </div>
     </div>
@@ -22,11 +24,12 @@
                 <input type="text"
                     class="form-control"
                     placeholder="Agregar favorito"
-                    (keyup.enter)="1"
+                    [formControl]="nuevoFavorito"
+                    (keyup.enter)="agregarFavorito()"
                 >
                 <button type="button"
                     class="btn btn-outline-primary"
-                    (click)="1"
+                    (click)="agregarFavorito()"
                 >Agregar</button>
             </div>
         </div>
@@ -34,28 +37,32 @@
     <!-- Lista de Juegos Favoritos -->
     <div class="mb-3 row">
         <label class="col-sm-3 col-form-label">Favoritos</label>
-        <div class="col-sm-9">
-            <!--
-            <div class="input-group mb-1" *ngFor="let juego of persona.favoritos; let i = index">
+        <div class="col-sm-9" formArrayName="favoritos">
+            <div class="input-group mb-1"
+                *ngFor="let favorito of favoritosArr.controls; let i = index"
+            >
                 <input type="text"
                     class="form-control"
+                    [formControlName]="i"
                 >
                 <button type="button"
                     class="btn btn-outline-danger"
-                    (click)="1"
+                    (click)="eliminar(i)"
                 >Eliminar</button>
             </div>
-            -->
         </div>
     </div>
 
     <div class="row">
         <div class="col-12">
             <button type="button"
-                (click)="1"
+                (click)="guardar()"
                 class="btn btn-primary float-end"
             >Guardar</button>
         </div>
     </div>
     
 </form>
+
+<span>Value</span>
+<pre> {{ miFormulario.value | json }} </pre>
